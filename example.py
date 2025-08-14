@@ -8,7 +8,7 @@ async def main():
     async with AsyncDeepLClient(api_key) as client:
         # Simple translation
         result = await client.translate_text(
-            "I am trying something with multiple mentions at once\n<@341257685901246466><@815328232537718794><#815328232537718794>",
+            "I am doing a test",
             target_lang="french",
             show_billed_characters=True
         )
