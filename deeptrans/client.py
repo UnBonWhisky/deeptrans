@@ -317,7 +317,15 @@ class AsyncDeepLClient:
             request_data["show_billed_characters"] = True
 
         # Make request
-        response = await self._make_request("v2/translate", request_data)
+        try:
+            response = await self._make_request("v2/translate", request_data)
+        except DeepLException as e:
+            if "model_type=latency_optimized is not supported for the requested language pair" in str(e):
+                # Retry without model_type parameter
+                del request_data["model_type"]
+                response = await self._make_request("v2/translate", request_data)
+            else:
+                raise e
         
         # Parse response
         translations = response.get("translations", [])
